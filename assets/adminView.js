@@ -67,6 +67,9 @@ socket.on('usersData',function(msg){
           data.referencia = $('div#popupPrenda input#referencia').val();
           data.idSocket =  $('div#popupPrenda input#id').val();
 
+
+          
+
           $.ajax({
             url: "/buscaPrenda",
             type: "POST",
@@ -74,9 +77,15 @@ socket.on('usersData',function(msg){
             contentType: 'application/json',
             cache: false,
             timeout: 5000,
+            beforeSend: function() {
+              //desactivamos el boton y le cambiamos el mensaje
+              $('.buscaPrenda').prop( "disabled", true );
+              $('.buscaPrenda').text("cargando......");
+            },
             complete: function() {
               //called when complete
-              //console.log('process complete');
+              $('.buscaPrenda').prop( "disabled", false );
+              $('.buscaPrenda').text("buscar prenda");
             },
             success: function(data) {
               var json = $.parseJSON(data);
@@ -96,9 +105,10 @@ socket.on('usersData',function(msg){
                 $('div#asignar input#refPrenda').val($('div#popupPrenda input#referencia').val());
 
               }},
-
-            error: function() {
-              console.log('process error');
+              error: function() {
+                console.log('process error');
+                $('.buscaPrenda').prop( "disabled", false );
+                $('.buscaPrenda').text("buscar prenda");
 
             }})
           });
@@ -133,7 +143,6 @@ socket.on('usersData',function(msg){
             _data.id = $('div#asignar input#id').val();
             _data.ref = $('div#asignar input#refPrenda').val();
 
-
             $.ajax({
               url: "/asignaPrenda",
               type: "POST",
@@ -141,6 +150,11 @@ socket.on('usersData',function(msg){
               contentType: 'application/json',
               cache: false,
               timeout: 5000,
+              beforeSend: function() {
+                //desactivamos el boton y le cambiamos el mensaje
+                $('#asignaPrenda').prop( "disabled", true );
+                $('#asignaPrenda').text("mandando datos.......");
+              },
               complete: function() {
               },
 
@@ -154,10 +168,14 @@ socket.on('usersData',function(msg){
 
                 socket.emit('reload', msgObj);
 
+                $('#asignaPrenda').prop( "disabled", false );
+                $('#asignaPrenda').text("asigna prenda a pantalla");
               },
               
               error: function() {
                 console.log('process error');
+                $('#asignaPrenda').prop( "disabled", false );
+                $('#asignaPrenda').text("asigna prenda a pantalla");
               }
             })
 
