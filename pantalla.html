@@ -1,0 +1,179 @@
+<!doctype html>
+<html>
+  <head>
+    <title></title>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <script src="assets/vegas.min.js"></script>  
+    
+    <link rel="stylesheet" href="assets/vegas.min.css">
+
+    <style>
+
+    #informacion{
+      font-family: 'BGLight';
+      position:absolute;
+      right:80px;
+      top:30px;
+      padding: 30px;
+    }
+
+    h1{
+      font-size: 65px;
+      padding: 5px 0px 20px 0px;
+      margin: 0px;
+      line-height: 60px;
+    }
+    h2{
+      font-size: 30px;
+      padding: 0px;
+      margin: 0px;
+    }
+    h3{
+      font-size: 16px;
+      padding: 0px;
+      margin: 0px;
+      padding-left: 8px;
+      line-height: 20px;
+    }
+    @font-face {
+        font-family: 'BGMed';
+        src: url('assets/fonts/brandon_med-webfont.eot');
+        src: url('assets/fonts/brandon_med-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_med-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_med-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_med-webfont.svgz#BrandonGrotesqueMedium') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'BGBold';
+        src: url('assets/fonts/brandon_bld-webfont.eot');
+        src: url('assets/fonts/brandon_bld-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_bld-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_bld-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_bld-webfont.svgz#BrandonGrotesqueBold') format('svg');
+        font-weight: normal;
+        font-style: normal;
+
+    } 
+
+    @font-face {
+        font-family: 'BGReg';
+        src: url('assets/fonts/brandon_reg-webfont.eot');
+        src: url('assets/fonts/brandon_reg-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_reg-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_reg-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_reg-webfont.svg#BrandonGrotesqueRegularRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'BGLight';
+        src: url('assets/fonts/brandon_light-webfont.eot');
+        src: url('assets/fonts/brandon_light-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_light-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_light-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_light-webfont.svg#BrandonGrotesqueRegularLight') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+      .blink {
+          color: #FFF !important;
+          background: #FC79CE;
+          !important;
+      }
+      #parpadea{
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+    </style>
+  </head>
+
+
+  <body class="vegas">
+
+    <div id="informacion">
+      <h2></h2>
+      <h1></h1>
+      <h3></h3>
+    </div>
+
+    <div id="parpadea"></div>
+
+    <script>
+      function fotiki(_url0, _url1, _url2, _url3){    
+        var imagenes = [];
+        imagenes.push({src: _url0});
+        imagenes.push({src: _url1});
+        imagenes.push({src: _url2});
+        imagenes.push({src: _url3});
+
+        $("body.vegas").vegas({
+            slides: imagenes
+        });
+      }
+
+      var socket = io.connect();
+      
+      // nos han asignado una prenda nueva asi que recargamos
+      socket.on('reload', function(msg){
+        location.reload();
+      });
+
+      socket.on('connect', function(msg){
+        // preunta quien eres, tienes que mandarles tu ip
+        socket.emit('quienSoy');
+      });
+     /// recibimos una orden del admin
+      socket.on('muestraPrenda', function(msg){
+          
+          $('div#informacion h1').text('');
+          $('div#informacion h2').text('');
+          $('div#informacion h3').text('');
+
+          $('div#informacion h2').text(msg[0].nombre);
+          $('div#informacion h1').text(msg[0].pvpPromo + '€');
+          $('div#informacion h3').text(' ' + msg[0].pvp + '€');
+
+          fotiki(msg[0].img0, msg[0].img1, msg[0].img2, msg[0].img3);
+      });
+
+      socket.on('parpadea',function(msg){
+        $('body').effect("pulsate", { times:3 }, 2000);
+      });
+
+
+      //// efectos del jquery pa jugar
+      function blink(elem, times, speed) {
+          if (times > 0 || times < 0) {
+              if ($(elem).hasClass("blink")) 
+                  $(elem).removeClass("blink");
+              else
+                  $(elem).addClass("blink");
+          }
+
+          clearTimeout(function () {
+              blink(elem, times, speed);
+          });
+
+          if (times > 0 || times < 0) {
+              setTimeout(function () {
+                  blink(elem, times, speed);
+              }, speed);
+              times -= .5;
+          }
+      }
+
+
+
+    </script>
+  </body>
+</html>

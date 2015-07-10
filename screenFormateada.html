@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="assets/vegas.min.js"></script>  
+    
+    <link rel="stylesheet" href="assets/vegas.min.css">
+    <style type="text/css">
+
+    #informacion{
+      font-family: 'BGLight';
+      position:absolute;
+      right:80px;
+      top:30px;
+      padding: 30px;
+    }
+    h1{
+      font-size: 65px;
+      padding: 5px 0px 20px 0px;
+      margin: 0px;
+      line-height: 60px;
+    }
+    h2{
+      font-size: 30px;
+      padding: 0px;
+      margin: 0px;
+    }
+    h3{
+      font-size: 16px;
+      padding: 0px;
+      margin: 0px;
+    }
+    @font-face {
+        font-family: 'BGMed';
+        src: url('assets/fonts/brandon_med-webfont.eot');
+        src: url('assets/fonts/brandon_med-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_med-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_med-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_med-webfont.svgz#BrandonGrotesqueMedium') format('svg');
+        font-weight: normal;
+        font-style: normal;
+
+    }
+
+    @font-face {
+        font-family: 'BGBold';
+        src: url('assets/fonts/brandon_bld-webfont.eot');
+        src: url('assets/fonts/brandon_bld-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_bld-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_bld-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_bld-webfont.svgz#BrandonGrotesqueBold') format('svg');
+        font-weight: normal;
+        font-style: normal;
+
+    } 
+
+    @font-face {
+        font-family: 'BGReg';
+        src: url('assets/fonts/brandon_reg-webfont.eot');
+        src: url('assets/fonts/brandon_reg-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_reg-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_reg-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_reg-webfont.svg#BrandonGrotesqueRegularRg') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    @font-face {
+        font-family: 'BGLight';
+        src: url('assets/fonts/brandon_light-webfont.eot');
+        src: url('assets/fonts/brandon_light-webfont.eot?#iefix') format('embedded-opentype'),
+             url('assets/fonts/brandon_light-webfont.woff') format('woff'),
+             url('assets/fonts/brandon_light-webfont.ttf') format('truetype'),
+             url('assets/fonts/brandon_light-webfont.svg#BrandonGrotesqueRegularLight') format('svg');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    </style>
+
+  </head>
+
+  <body class="vegas">
+
+    <div id="informacion">
+      <h2>BOLSO SHOPPER BICOLOR</h2>
+      <h1>22,99 &euro;</h1>
+      <h3>REF. 897897897987</h3>
+    </div>
+
+    <script>
+    function fotiki(){
+      $("body.vegas").vegas({
+          slides: [
+              { src: "http://static.pullandbear.net/2/photos/2015/V/0/1/p/9238/307/512/9238307512_w_2_1_2.jpg" },
+              { src: "http://static.pullandbear.net/2/photos/2015/V/0/1/p/9238/307/512/9238307512_w_2_2_2.jpg" },
+              { src: "http://static.pullandbear.net/2/photos/2015/V/0/1/p/9238/307/512/9238307512_w_2_3_2.jpg" },
+              { src: "http://static.pullandbear.net/2/photos/2015/V/0/1/p/9238/307/512/9238307512_w_2_4_2.jpg" }
+          ]
+      });
+    }
+    fotiki();
+
+    $( window ).resize(function() {
+      fotiki();
+    });
+    </script>
+
+  </body>
+</html>
+
+
+
+

@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      .blink {
+          color: #FFF !important;
+          background: #FC79CE;
+          !important;
+      }
+      .apagate{color: #FFF !important;
+          background: #CCCCCC;
+          !important;}
+    </style>
+  </head>
+  <body>
+    <h1>My nombre es </h2>
+
+    <h2 id="myId">mensajes admin</h2>
+
+    <h2>mensajes admin</h2>
+    <ul id="messagesAdmin"></ul>
+
+     <h2>mensajes pa todos</h2>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button type="submit">dalet</button>
+    </form>
+
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      var socket = io.connect();
+
+      $('form').submit(function(){
+        socket.emit('chat message', $('#m').val());
+        
+        $('#m').val('');
+        return false;
+      });
+     
+     /// recibimos una orden del admin
+      socket.on('meOrdenan', function(msg){
+        console.log('meOrdenan ' + msg);
+        switch(msg.orden){
+          case 'parpadea':
+            blink("body", 4, 500)
+          break;
+
+          case 'cambiaNombre':
+            apagate(msg.nombre)
+          break;
+        }
+
+        $('#messagesAdmin').append($('<li>').text(msg.orden));
+      });
+
+      socket.on('chat message', function(msg){
+        $('#messages').append($('<li>').text(msg));
+      });
+
+
+      //// efectos del jquery pa jugar
+      function blink(elem, times, speed) {
+          if (times > 0 || times < 0) {
+              if ($(elem).hasClass("blink")) 
+                  $(elem).removeClass("blink");
+              else
+                  $(elem).addClass("blink");
+          }
+
+          clearTimeout(function () {
+              blink(elem, times, speed);
+          });
+
+          if (times > 0 || times < 0) {
+              setTimeout(function () {
+                  blink(elem, times, speed);
+              }, speed);
+              times -= .5;
+          }
+      }
+
+      function apagate(_nombre) {
+        alert(_nombre);
+        $('h1').text("Mi nombre es " + _nombre);
+      }
+
+
+
+
+    </script>
+  </body>
+</html>
